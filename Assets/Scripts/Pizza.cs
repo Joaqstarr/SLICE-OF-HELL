@@ -29,13 +29,15 @@ public class Pizza : MonoBehaviour
         Left = 6,
         TopLeft = 7
     }
+    [SerializeField]
+    Transform _sliceHolder;
 
 
     [SerializeField]
     Slice _slicePrefab;
     Slice[] _slices;
     private int _sliceCount = 8;
-    [SerializeField] private float _startingAngle = 22.5f;
+    [SerializeField] private float _startingAngle = 0;
 
     [SerializeField]
     List<CutInfo> _cuts;
@@ -48,10 +50,11 @@ public class Pizza : MonoBehaviour
         float angle = _startingAngle;
         for(int i = 0; i < _sliceCount; i++)
         {
-            Slice _spawnedSlice = Instantiate(_slicePrefab, transform);
+            Slice _spawnedSlice = Instantiate(_slicePrefab, transform.GetChild(0));
             _spawnedSlice.transform.localPosition = Vector2.zero;
             _spawnedSlice.transform.rotation = Quaternion.Euler(0, 0, angle);
-            angle += 360f / _sliceCount;
+            angle -= 360f / _sliceCount;
+            _slices[i] = _spawnedSlice;
         }
 
     }
@@ -64,7 +67,19 @@ public class Pizza : MonoBehaviour
 
     public void MakeSlice(Vector2[] dirs)
     {
-        _cuts.Add(new CutInfo(VectorToSliceDirection(dirs[0]), VectorToSliceDirection(dirs[1])));
+        CutInfo thisCutInfo = new CutInfo(VectorToSliceDirection(dirs[0]), VectorToSliceDirection(dirs[1]));
+        _cuts.Add(thisCutInfo);
+        int i = (int)thisCutInfo.Start;
+        Transform newSliceHolder = Instantiate(_sliceHolder, transform);
+        int endPoint = (int)thisCutInfo.End;
+        Debug.Log("End Point: " + endPoint);
+        while (i != endPoint)
+        {
+            Debug.Log("I: " + i);
+
+            _slices[i].transform.parent = newSliceHolder;
+            i = (i+1) % _slices.Length;
+        }
     }
 
     private Direction VectorToSliceDirection(Vector2 dir)
