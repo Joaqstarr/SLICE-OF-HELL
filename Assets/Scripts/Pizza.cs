@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public struct CutInfo
 {
     public Pizza.Direction Start;
@@ -35,6 +37,7 @@ public class Pizza : MonoBehaviour
     private int _sliceCount = 8;
     [SerializeField] private float _startingAngle = 22.5f;
 
+    [SerializeField]
     List<CutInfo> _cuts;
     // Start is called before the first frame update
     void Start()
@@ -59,10 +62,6 @@ public class Pizza : MonoBehaviour
         
     }
 
-    public void MakeSlice(Vector2 start, Vector2 end)
-    {
-        _cuts.Add(new CutInfo(VectorToSliceDirection(start), VectorToSliceDirection(end)));   
-    }
     public void MakeSlice(Vector2[] dirs)
     {
         _cuts.Add(new CutInfo(VectorToSliceDirection(dirs[0]), VectorToSliceDirection(dirs[1])));
