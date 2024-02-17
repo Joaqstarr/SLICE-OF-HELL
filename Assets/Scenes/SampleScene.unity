@@ -532,7 +532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f77a7e7749ca94ea1797a4e1593c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slicePrefab: {fileID: 4880100880409769330, guid: c0999d1c769411045ba8fc2681d31f1c, type: 3}
+  _slicePrefab: {fileID: 1802931831046782527, guid: c0999d1c769411045ba8fc2681d31f1c, type: 3}
   _startingAngle: 22.5
 --- !u!1 &1419782892
 GameObject:

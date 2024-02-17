@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerPlayingState : PlayerBaseState
 {
+    
     private enum SlicingState
     {
         Lineup,
@@ -11,6 +12,10 @@ public class PlayerPlayingState : PlayerBaseState
         Slice
     }
     private SlicingState _currentState;
+
+
+    private Vector2[] _directions = new Vector2[2];
+
     public override void OnEnterState(PlayerManager player)
     {
         _currentState = SlicingState.Lineup;
@@ -28,21 +33,29 @@ public class PlayerPlayingState : PlayerBaseState
         switch (_currentState){
             case SlicingState.Lineup:
                 player.transform.position = (Vector2)player.Pizza.transform.position + player.Controls.CurrentDirection * player.Radius;
-                if(player.Controls.IsHoldingSlice)
+                if (player.Controls.IsHoldingSlice)
+                {
+                    _directions[0] = player.Controls.CurrentDirection;
                     _currentState = SlicingState.Aim;
+
+                }
                 break;
             case SlicingState.Aim:
-                if (!player.Controls.IsHoldingSlice)
+                Aim(player);
+
+                if (!player.Controls.IsHoldingSlice && player.Controls.CurrentDirection.magnitude > 0)
                 {
+                    _directions[1] = player.Controls.CurrentDirection;
                     _currentState = SlicingState.Slice;
                     break;
                 }
 
-                Aim(player);
 
                 break;
             case SlicingState.Slice:
                 Debug.Log("SLICE");
+
+                player.Pizza.SendMessage("MakeSlice", _directions);
                 _currentState = SlicingState.Lineup;
                 break;
         }
