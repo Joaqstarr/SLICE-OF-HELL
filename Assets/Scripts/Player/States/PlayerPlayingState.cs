@@ -33,7 +33,7 @@ public class PlayerPlayingState : PlayerBaseState
         switch (_currentState){
             case SlicingState.Lineup:
                 player.transform.position = (Vector2)player.Pizza.transform.position + player.Controls.CurrentDirection * player.Radius;
-                if (player.Controls.IsHoldingSlice)
+                if (player.Controls.IsHoldingSlice && player.Controls.CurrentDirection != Vector2.zero)
                 {
                     _directions[0] = player.Controls.CurrentDirection;
                     _currentState = SlicingState.Aim;

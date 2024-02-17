@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [Serializable]
@@ -10,6 +12,12 @@ public struct CutInfo
     public Pizza.Direction End;
     public CutInfo(Pizza.Direction start, Pizza.Direction end)
     {
+        if((int)start < (int)end)
+        {
+            Pizza.Direction hold = end;
+            end = start;
+            start = hold;
+        }
         Start = start;
         End = end;
     }
@@ -41,9 +49,14 @@ public class Pizza : MonoBehaviour
 
     [SerializeField]
     List<CutInfo> _cuts;
+
+    private List<SliceHolder> _sliceHolders;
     // Start is called before the first frame update
     void Start()
-    {
+    { 
+
+        _sliceHolders = new List<SliceHolder>();
+
         _cuts = new List<CutInfo>();
         _slices = new Slice[_sliceCount];
 
@@ -51,11 +64,17 @@ public class Pizza : MonoBehaviour
         for(int i = 0; i < _sliceCount; i++)
         {
             Slice _spawnedSlice = Instantiate(_slicePrefab, transform.GetChild(0));
+
+            _spawnedSlice.Init(i);
             _spawnedSlice.transform.localPosition = Vector2.zero;
             _spawnedSlice.transform.rotation = Quaternion.Euler(0, 0, angle);
             angle -= 360f / _sliceCount;
             _slices[i] = _spawnedSlice;
         }
+        _sliceHolders.Add(transform.GetChild(0).GetComponent<SliceHolder>());
+        UpdateAllSliceHolders(false);
+
+
 
     }
 
@@ -69,17 +88,20 @@ public class Pizza : MonoBehaviour
     {
         CutInfo thisCutInfo = new CutInfo(VectorToSliceDirection(dirs[0]), VectorToSliceDirection(dirs[1]));
         _cuts.Add(thisCutInfo);
-        int i = (int)thisCutInfo.Start;
-        Transform newSliceHolder = Instantiate(_sliceHolder, transform);
-        int endPoint = (int)thisCutInfo.End;
-        Debug.Log("End Point: " + endPoint);
-        while (i != endPoint)
+        int holdersCount = _sliceHolders.Count;
+        for (int j = 0; j < holdersCount; j++)
         {
-            Debug.Log("I: " + i);
 
-            _slices[i].transform.parent = newSliceHolder;
-            i = (i+1) % _slices.Length;
+            CutFromHolder(thisCutInfo, _sliceHolders[j]);
         }
+
+        UpdateAllSliceHolders(true);
+        for (int i = 0; i < _sliceHolders.Count; i++)
+        {
+            MakeSliceValid(_sliceHolders[i]);
+        }
+        UpdateAllSliceHolders(true, true);
+
     }
 
     private Direction VectorToSliceDirection(Vector2 dir)
@@ -124,6 +146,56 @@ public class Pizza : MonoBehaviour
             {
                 return Direction.Right;
             }
+        }
+    }
+
+    private void CutFromHolder(CutInfo cut, SliceHolder holder)
+    {
+        int endPoint = (int)cut.End;
+
+        if (holder.HeldSlices.Length > 1)
+        {
+            Transform newSliceHolder = null;
+
+            int i = (int)cut.Start;
+            while (i != endPoint)
+            {
+                if (holder.SliceMap.ContainsKey(i))
+                {
+                    if (newSliceHolder == null)
+                        newSliceHolder = Instantiate(_sliceHolder, transform);
+
+                    holder.SliceMap[i].transform.parent = newSliceHolder;
+                    holder.SliceMap[i].transform.localPosition = Vector2.zero;
+                }
+
+                i = (i + 1) % _slices.Length;
+            }
+            if (newSliceHolder != null)
+                _sliceHolders.Add(newSliceHolder.GetComponent<SliceHolder>());
+        }
+    }
+
+    private void MakeSliceValid(SliceHolder sliceToCheck)
+    {
+
+        for (int i = 0; i < sliceToCheck.HeldIndices.Length -1; i++)
+        {
+
+            if (MathF.Abs( sliceToCheck.HeldIndices[i] - sliceToCheck.HeldIndices[(i+1)%sliceToCheck.HeldIndices.Length])> 1.1f && !(sliceToCheck.HeldIndices[i] == 7 && sliceToCheck.HeldIndices[(i + 1) % sliceToCheck.HeldIndices.Length] == 0))
+            {
+                CutInfo cutToMake = new CutInfo((Direction)sliceToCheck.HeldIndices[0], (Direction)sliceToCheck.HeldIndices[i + 1]);
+                CutFromHolder(cutToMake, sliceToCheck);
+                return;
+            }
+            
+        }
+    }
+    public void UpdateAllSliceHolders(bool deleteIfEmpty = false, bool move = false)
+    {
+        for(int i = 0; i < _sliceHolders.Count; i++)
+        {
+            _sliceHolders[i].UpdateInfo(deleteIfEmpty, move);
         }
     }
 }

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 69294790074604995}
+  - component: {fileID: -8572399757772534274}
   m_Layer: 0
   m_Name: SliceHolder
   m_TagString: Untagged
@@ -31,3 +32,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-8572399757772534274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8807982907072199115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59d660b2f479cb04294cb9825019d9b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeldSlices: []
+  HeldIndices: 
+  _radius: 1
+  _maxSlicesToMove: 3
+  _moveDuration: 0.1
+  _ease: 27
+  _shakeSize: 0.3
+  _shakeRotSize: 50

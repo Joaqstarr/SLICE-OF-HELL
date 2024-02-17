@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Slice : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private int _sliceNum;
+    public void Init(int num)
     {
-        
+        _sliceNum = num;
     }
 
-    // Update is called once per frame
-    void Update()
+    public int GetSliceNum()
     {
-        
+        return _sliceNum;
     }
+
 }
