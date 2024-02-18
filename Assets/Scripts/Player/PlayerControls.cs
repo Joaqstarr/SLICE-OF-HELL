@@ -8,6 +8,8 @@ public class PlayerControls : MonoBehaviour
 
     public Vector2 CurrentDirection;
     public bool IsHoldingSlice = false;
+    public bool IsHoldingFinish = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,5 +25,15 @@ public class PlayerControls : MonoBehaviour
     {
         IsHoldingSlice = Value.isPressed;
 
+    }
+    public void OnFinish(InputValue Value)
+    {
+        IsHoldingFinish = Value.isPressed;
+
+    }
+
+    public void OnQuit()
+    {
+        Application.Quit();
     }
 }

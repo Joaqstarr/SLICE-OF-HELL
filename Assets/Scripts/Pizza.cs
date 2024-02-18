@@ -1,8 +1,7 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [Serializable]
@@ -50,6 +49,21 @@ public class Pizza : MonoBehaviour
     [SerializeField]
     List<CutInfo> _cuts;
 
+    [SerializeField] AudioSource _enterAudio;
+
+    public Vector2 _basePosition;
+    [SerializeField] Vector2 _startPosition;
+    [SerializeField] Vector2 _endPosition;
+    [SerializeField] TweenSettings _enterSettings;
+    [SerializeField] TweenSettings _exitSettings;
+
+
+    public delegate void PizzaSpawned();
+    public PizzaSpawned PizzaSpawn;
+
+    public delegate void PizzaSubmitted(CutInfo[] pizzaInfo);
+    public PizzaSubmitted SubmitPizza;
+    
     private List<SliceHolder> _sliceHolders;
     // Start is called before the first frame update
     void Start()
@@ -74,15 +88,11 @@ public class Pizza : MonoBehaviour
         _sliceHolders.Add(transform.GetChild(0).GetComponent<SliceHolder>());
         UpdateAllSliceHolders(false);
 
-
+        StartPizza();
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 
     public void MakeSlice(Vector2[] dirs)
     {
@@ -151,6 +161,7 @@ public class Pizza : MonoBehaviour
 
     private void CutFromHolder(CutInfo cut, SliceHolder holder)
     {
+        holder.Kill();
         int endPoint = (int)cut.End;
 
         if (holder.HeldSlices.Length > 1)
@@ -198,4 +209,46 @@ public class Pizza : MonoBehaviour
             _sliceHolders[i].UpdateInfo(deleteIfEmpty, move);
         }
     }
+
+    public void FinishPizza()
+    {
+        _enterAudio.Play();
+
+        transform.DOMove(_endPosition, _exitSettings.duration).SetEase(_exitSettings.ease).onComplete += StartPizza;
+        if(SubmitPizza != null)
+            SubmitPizza(_cuts.ToArray());
+    }
+
+    private void ResetPizza()
+    {
+        for(int i = 0; i < _slices.Length; i++)
+        {
+            _slices[i].transform.parent = transform.GetChild(0);
+            _slices[i].transform.localPosition = Vector3.zero;
+        }
+        for(int i = 1; i < _sliceHolders.Count; i++)
+        {
+            Destroy(_sliceHolders[i].gameObject);
+            _sliceHolders.RemoveAt(i);
+            i--;
+        }
+
+        _cuts.Clear();
+        UpdateAllSliceHolders(true, false);
+        transform.GetChild(0).localPosition = Vector3.zero;
+    }
+    private void StartPizza()
+    {
+        ResetPizza();
+        _enterAudio.Play();
+        transform.position = _startPosition;
+        transform.DOMove(_basePosition, _enterSettings.duration).SetEase(_enterSettings.ease).onComplete += PizzaIn;
+    }
+
+    private void PizzaIn()
+    {
+        if (PizzaSpawn != null)
+            PizzaSpawn();
+    }
+    
 }

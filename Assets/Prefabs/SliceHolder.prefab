@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HeldSlices: []
   HeldIndices: 
-  _radius: 1
-  _maxSlicesToMove: 3
+  _radius: 0.4
+  _maxSlicesToMove: 4
   _moveDuration: 0.1
   _ease: 27
   _shakeSize: 0.3

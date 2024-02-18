@@ -45,7 +45,10 @@ public class SliceHolder : MonoBehaviour
             HeldIndices[i] = HeldSlices[i].GetSliceNum();
             SliceMap[HeldIndices[i]] = HeldSlices[i];
 
-            averageAngle += HeldSlices[i].transform.rotation.eulerAngles.z;
+            //if (HeldSlices.Length == 3)
+               // Debug.Log("angle: " + averageAngle + " += " + ConvertAngleToNegative(HeldSlices[i].transform.rotation.eulerAngles.z));
+            averageAngle += ConvertAngleToNegative(HeldSlices[i].transform.rotation.eulerAngles.z);
+
         }
 
         if (HeldSlices.Length > 0 && move)
@@ -64,11 +67,11 @@ public class SliceHolder : MonoBehaviour
     private void UpdatePosition(float angle)
     {
         Debug.Log(angle);
-        if(Mathf.Abs( angle) == 180)
+        if(Mathf.Abs( angle) == 0)
         {
-            if (transform.GetChild(0).eulerAngles.z == 22.5f)
+            if (transform.GetChild(0).eulerAngles.z != 22.5f)
             {
-                angle = 0;
+                angle = 180;
             }
             
         }
@@ -100,4 +103,16 @@ public class SliceHolder : MonoBehaviour
         return SliceMap.Count;
     }
 
+    private float ConvertAngleToNegative(float angle)
+    {
+        return (angle > 180) ? angle - 360 : angle;
+    }
+
+    public void Kill()
+    {
+        foreach(Slice slice in HeldSlices)
+        {
+            slice.Kill();
+        }
+    }
 }
