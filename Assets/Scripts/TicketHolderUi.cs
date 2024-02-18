@@ -51,10 +51,13 @@ public class TicketHolderUi : MonoBehaviour
 
         if (isValid)
         {
+            Debug.Log("Valid");
             //yippee
         }
         else
         {
+            Debug.Log("Invalid");
+
             //oh no :((
         }
 

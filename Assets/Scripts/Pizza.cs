@@ -221,8 +221,9 @@ public class Pizza : MonoBehaviour
 
     private void ResetPizza()
     {
-        for(int i = 0; i < _slices.Length; i++)
-        {
+        for (int i = 0; i < _slices.Length; i++)
+        { 
+            _slices[i].transform.parent = null;
             _slices[i].transform.parent = transform.GetChild(0);
             _slices[i].transform.localPosition = Vector3.zero;
         }

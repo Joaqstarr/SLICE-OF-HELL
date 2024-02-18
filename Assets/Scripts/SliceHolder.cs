@@ -55,7 +55,22 @@ public class SliceHolder : MonoBehaviour
         {
             averageAngle /= HeldSlices.Length;
             //Debug.Log(averageAngle);
+
+
+            if(HeldSlices.Length % 2 == 0)
+            {
+                float z = HeldSlices[(HeldSlices.Length / 2)-1].transform.rotation.eulerAngles.z + HeldSlices[(HeldSlices.Length / 2) ].transform.rotation.eulerAngles.z;
+               // Debug.Log(z);
+                averageAngle = z / 2f;
+            }
+            else
+            {
+                averageAngle = HeldSlices[Mathf.CeilToInt(HeldSlices.Length / 2f)-1].transform.rotation.eulerAngles.z;
+                //Debug.Log("Length: " + HeldSlices.Length + ", Middle: " + (Mathf.CeilToInt(HeldSlices.Length / 2f)-1) + ", average: " + HeldSlices[Mathf.CeilToInt(HeldSlices.Length / 2f)-1].transform.rotation.eulerAngles.z);
+            }
+            averageAngle = ConvertAngleToNegative(averageAngle);
             averageAngle *= -1;
+
             UpdatePosition(averageAngle);
 
         }
@@ -66,15 +81,17 @@ public class SliceHolder : MonoBehaviour
 
     private void UpdatePosition(float angle)
     {
-        Debug.Log(angle);
-        if(Mathf.Abs( angle) == 0)
+        if(Mathf.Abs( angle) < 5 || Mathf.Abs(angle) > 175)
         {
-            if (transform.GetChild(0).eulerAngles.z != 22.5f)
+
+
+            if (transform.GetChild(0).eulerAngles.z - 180 < 0)
             {
-                angle = 180;
+                angle = 0;
             }
             
         }
+        
         if (HeldSlices.Length > _maxSlicesToMove || HeldSlices.Length == 0)
             return;
 

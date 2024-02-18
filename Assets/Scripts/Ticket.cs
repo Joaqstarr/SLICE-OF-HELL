@@ -33,13 +33,25 @@ public class Ticket
     {
         int[] PizzaValues = CutInfoArrayToFloat(Pizza);
         int[] TicketValues = Cuts.ToArray();
+        Debug.Log("Pizza Values = " + String.Join("",
+            new List<int>(PizzaValues)
+            .ConvertAll(i => i.ToString())
+            .ToArray()));
 
-        if (PizzaValues.Length != TicketValues.Length)
-            return false;
+      //  if (PizzaValues.Length != TicketValues.Length)
+      //      return false;
 
         for (int i = 0; i < PizzaValues.Length; i++)
         {
-            if (PizzaValues[i] != TicketValues[i])
+            bool matching = false;
+
+            for(int j = 0; j < TicketValues.Length; j++)
+            {
+                if (PizzaValues[i] == TicketValues[j])
+                    matching = true;
+
+            }
+            if(!matching)
                 return false;
         }
 

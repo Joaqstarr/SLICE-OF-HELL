@@ -1232,7 +1232,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2146015287}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.11, y: 4.61, z: 0.039431185}
+  m_LocalPosition: {x: -7.15, y: 3.6, z: 0.039431185}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1252,7 +1252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ticketPrefab: {fileID: -1011622945567348198, guid: c98fde494b950e140b78a7758bff301e, type: 3}
-  _ticketSpace: 1.31
+  _ticketSpace: 3
   _playerPizza: {fileID: 1248849862}
 --- !u!1001 &3767766823686767730
 PrefabInstance:
