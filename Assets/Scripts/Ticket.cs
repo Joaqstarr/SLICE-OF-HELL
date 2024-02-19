@@ -12,8 +12,22 @@ public class Ticket
     private float _maxTime;
 
 
-    public Ticket(float time, int amountOfCuts)
+
+
+    public Ticket( float time, int amountOfCuts, bool ready = false)
     {
+        if (ready)
+        {
+            Cuts = new List<int>();
+            Cuts.Add(0);
+            Cuts.Add(4);
+            Cuts.Add(2);
+            Cuts.Add(6);
+
+            return;
+
+        }
+
         Cuts = new List<int>();
         //generate cut
         _maxTime = time;
@@ -22,13 +36,31 @@ public class Ticket
         
         for(int i = 0; i < amountOfCuts; i++)
         {
-            
+
             Cuts.Add(UnityEngine.Random.Range(0, 7));
         }
-        Cuts.Distinct();
-        Cuts.Sort();
-    }
 
+        Cuts.Sort();
+
+        MakeUnique(Cuts);
+
+        if(Cuts.Count == 1 ) { 
+            int ranInt = UnityEngine.Random.Range(1, 6);
+      
+            Cuts.Add((Cuts[0] + ranInt)%7);
+            Debug.Log("Post Unique = " + String.Join("",
+              new List<int>(Cuts)
+              .ConvertAll(i => i.ToString())
+              .ToArray()));
+        }
+        Cuts.Sort();
+        
+
+    }
+    public void UpdateTime()
+    {
+        _time -= Time.deltaTime;
+    }
     public bool ValidatePizza(CutInfo[] Pizza)
     {
         int[] PizzaValues = CutInfoArrayToFloat(Pizza);
@@ -37,9 +69,20 @@ public class Ticket
             new List<int>(PizzaValues)
             .ConvertAll(i => i.ToString())
             .ToArray()));
-
-      //  if (PizzaValues.Length != TicketValues.Length)
-      //      return false;
+        Debug.Log("Ticket Values = " + String.Join("",
+            new List<int>(TicketValues)
+            .ConvertAll(i => i.ToString())
+            .ToArray()));
+          if (PizzaValues.Length != TicketValues.Length)
+              return false;
+        if (PizzaValues.Length == 0)
+        {
+            if(TicketValues.Length == 0)
+            {
+                return true;
+            }
+            return false;
+        }
 
         for (int i = 0; i < PizzaValues.Length; i++)
         {
@@ -66,7 +109,7 @@ public class Ticket
             ints.Add((int)array[i].Start);
             ints.Add((int)array[i].End);
         }
-        ints.Distinct();
+        MakeUnique(ints);
         ints.Sort();
         return ints.ToArray();
     }
@@ -77,6 +120,39 @@ public class Ticket
     }
     public float GetTimePercent()
     {
-        return _time / _maxTime;
+        return GetTime() / _maxTime;
+    }
+    public void FulfillTicket()
+    {
+
+    }
+    private void MakeUnique(List<int> numList)
+    {
+
+        for (int i = 0;i < numList.Count;i++)
+        {
+            for(int j = 0; j < numList.Count;j++) { 
+                if(i != j)
+                {
+                    if (numList[i] == numList[j])
+                    {
+                        numList.RemoveAt(j);
+                        j--;
+                        if (j < i)
+                            i--;
+                    }
+                        
+                }
+            }
+        }
+
+        if(numList.Count == 2)
+        {
+            if (numList[0] == numList[1])
+            {
+                numList.RemoveAt(1);
+            }
+        }
+
     }
 }

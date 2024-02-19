@@ -34,5 +34,8 @@ public class Slice : MonoBehaviour
     {
         Alive = false;
     }
-
+    public void Revive()
+    {
+        Alive = true;
+    }
 }

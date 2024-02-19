@@ -30,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 2345548772163281231}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -22.5}
 --- !u!1 &2589986896999874901
 GameObject:
@@ -107,11 +107,11 @@ SpriteMask:
   m_SortingOrder: 0
   m_Sprite: {fileID: -5170899823775464817, guid: a6b88e61a74b53745b00c22b919a76eb, type: 3}
   m_MaskAlphaCutoff: 0.2
-  m_FrontSortingLayerID: 0
-  m_BackSortingLayerID: 0
-  m_FrontSortingLayer: 0
-  m_BackSortingLayer: 0
-  m_FrontSortingOrder: 0
-  m_BackSortingOrder: 0
-  m_IsCustomRangeActive: 0
+  m_FrontSortingLayerID: -1557083519
+  m_BackSortingLayerID: -1557083519
+  m_FrontSortingLayer: 1
+  m_BackSortingLayer: 1
+  m_FrontSortingOrder: 3
+  m_BackSortingOrder: 1
+  m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0

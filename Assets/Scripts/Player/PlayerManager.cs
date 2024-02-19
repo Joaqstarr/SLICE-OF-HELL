@@ -1,3 +1,4 @@
+using Cinemachine;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -16,7 +17,8 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerBaseState _currentState;
 
-    private PlayerBaseState _playerGameState = new PlayerPlayingState();
+    public PlayerBaseState _playerGameState = new PlayerPlayingState();
+    public PlayerBaseState _playerTitleState = new PlayerTitleState();
 
     public Transform Pizza;
 
@@ -33,13 +35,16 @@ public class PlayerManager : MonoBehaviour
     public AudioSource _angleSource;
     public AudioSource _aimSource;
     public AudioSource _swipeSource;
-    
+    [SerializeField] public Sprite _upSprite;
+    [SerializeField] public Sprite _downSprite;
+    [SerializeField] public SpriteRenderer _art;
 
-
+    [SerializeField] public ParticleSystem _cutSystem;
+    public CinemachineImpulseSource _impulse;
     // Start is called before the first frame update
     void Start()
     {
-        _currentState = _playerGameState;
+        _currentState = _playerTitleState;
 
         _currentState.OnEnterState(this);
     }

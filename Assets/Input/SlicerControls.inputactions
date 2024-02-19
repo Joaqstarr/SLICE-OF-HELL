@@ -2,7 +2,7 @@
     "name": "SlicerControls",
     "maps": [
         {
-            "name": "Gameplay",
+            "name": "Player1",
             "id": "e1b11be8-3ba6-4c63-95be-832d2038bcce",
             "actions": [
                 {
@@ -40,6 +40,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "P1",
+                    "type": "Button",
+                    "id": "e9bc7ffa-9e10-45be-829d-1a8c1efe336d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "P2",
+                    "type": "Button",
+                    "id": "71406894-ba62-4558-828b-4124fbe3ee64",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -56,55 +74,11 @@
                 },
                 {
                     "name": "up",
-                    "id": "d350858a-bd2b-4935-85c7-04a06b5a08c5",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Player2",
-                    "action": "Direction",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "ebfae2cb-00ce-4a29-8761-2aee940e904f",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Player2",
-                    "action": "Direction",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "d5ba4ad5-0902-4ee7-b780-f74dfc673f3b",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Player2",
-                    "action": "Direction",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "7ad9fb0b-b255-438e-a8f4-c25e1932a3ff",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Player2",
-                    "action": "Direction",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "up",
                     "id": "3b81a297-ce06-4998-8040-8c21a0e241da",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Player1",
+                    "groups": "Keyboard",
                     "action": "Direction",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -115,7 +89,7 @@
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Player1",
+                    "groups": "Keyboard",
                     "action": "Direction",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -126,7 +100,7 @@
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Player1",
+                    "groups": "Keyboard",
                     "action": "Direction",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -137,21 +111,10 @@
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Player1",
+                    "groups": "Keyboard",
                     "action": "Direction",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "e6aedf28-f4c7-4254-af15-8af2e913e105",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Player2",
-                    "action": "Slice",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -159,7 +122,7 @@
                     "path": "<Keyboard>/j",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Player1",
+                    "groups": "Keyboard",
                     "action": "Slice",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -170,7 +133,7 @@
                     "path": "<Keyboard>/3",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Player1;Player2",
+                    "groups": "Keyboard",
                     "action": "Quit",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -181,18 +144,161 @@
                     "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Player1",
+                    "groups": "Keyboard",
                     "action": "Finish",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "625a15e6-bf50-4514-9023-4fc60e6a31a9",
+                    "id": "ba98aad2-c199-47ef-b850-1af7755e4f08",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "P1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a5ee516c-176c-4d08-8db9-84f3c11fad05",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "P2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Player2",
+            "id": "3daf5fb5-694f-4de4-810a-5dd3a5f4697e",
+            "actions": [
+                {
+                    "name": "Direction",
+                    "type": "Value",
+                    "id": "f0cffda7-2887-4724-a151-65c88223db86",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Slice",
+                    "type": "Value",
+                    "id": "b9b44cf4-e448-4960-92ff-5a3d67155053",
+                    "expectedControlType": "Digital",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Quit",
+                    "type": "Button",
+                    "id": "1274b6ef-4fc0-4439-b9b7-d1128105ec57",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Finish",
+                    "type": "Value",
+                    "id": "02e8a6da-92b8-4193-b221-fd0c5f38f2b1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Keyboard",
+                    "id": "70d40390-3114-4ea1-9c05-73de068ca51e",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Direction",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "b7f7d721-bb22-45ac-a208-1ae8bcf78393",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "46581553-cdac-4bc7-bf7d-7ccf9f0d3484",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "300471ad-1ca2-46b9-9def-effe59c2e994",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "35726d75-eb03-4791-817b-0ed6b8a9830b",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "9b1beaa2-82a7-46fd-b559-b8fe735ce98a",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Slice",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11fcd008-1b88-4244-8af4-e94910b81092",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Quit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dad1ee3b-b435-4abb-90bd-0828276b0566",
                     "path": "<Keyboard>/g",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Player2",
+                    "groups": "Keyboard",
                     "action": "Finish",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -202,19 +308,8 @@
     ],
     "controlSchemes": [
         {
-            "name": "Player1",
-            "bindingGroup": "Player1",
-            "devices": [
-                {
-                    "devicePath": "<Keyboard>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
-        },
-        {
-            "name": "Player2",
-            "bindingGroup": "Player2",
+            "name": "Keyboard",
+            "bindingGroup": "Keyboard",
             "devices": [
                 {
                     "devicePath": "<Keyboard>",

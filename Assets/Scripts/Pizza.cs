@@ -57,6 +57,7 @@ public class Pizza : MonoBehaviour
     [SerializeField] TweenSettings _enterSettings;
     [SerializeField] TweenSettings _exitSettings;
 
+    PizzaFaces _face;
 
     public delegate void PizzaSpawned();
     public PizzaSpawned PizzaSpawn;
@@ -68,7 +69,7 @@ public class Pizza : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     { 
-
+        _face = GetComponent<PizzaFaces>();
         _sliceHolders = new List<SliceHolder>();
 
         _cuts = new List<CutInfo>();
@@ -88,7 +89,8 @@ public class Pizza : MonoBehaviour
         _sliceHolders.Add(transform.GetChild(0).GetComponent<SliceHolder>());
         UpdateAllSliceHolders(false);
 
-        StartPizza();
+        //StartPizza();
+        transform.position = _startPosition;
 
     }
 
@@ -162,6 +164,7 @@ public class Pizza : MonoBehaviour
     private void CutFromHolder(CutInfo cut, SliceHolder holder)
     {
         holder.Kill();
+        _face.KillFace();
         int endPoint = (int)cut.End;
 
         if (holder.HeldSlices.Length > 1)
@@ -233,12 +236,13 @@ public class Pizza : MonoBehaviour
             _sliceHolders.RemoveAt(i);
             i--;
         }
-
+        _face.GenerateFace();
         _cuts.Clear();
         UpdateAllSliceHolders(true, false);
         transform.GetChild(0).localPosition = Vector3.zero;
+        _sliceHolders[0].Revive();
     }
-    private void StartPizza()
+    public void StartPizza()
     {
         ResetPizza();
         _enterAudio.Play();

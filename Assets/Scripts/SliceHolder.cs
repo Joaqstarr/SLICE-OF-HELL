@@ -132,4 +132,11 @@ public class SliceHolder : MonoBehaviour
             slice.Kill();
         }
     }
+    public void Revive()
+    {
+        foreach (Slice slice in HeldSlices)
+        {
+            slice.Revive();
+        }
+    }
 }

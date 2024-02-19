@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.XR.Oculus.Input;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TicketHolderUi : MonoBehaviour
 {
@@ -10,12 +11,24 @@ public class TicketHolderUi : MonoBehaviour
     TicketUi _ticketPrefab;
     [SerializeField]
     float _ticketSpace = 2f;
-    List<TicketUi> _ticketUis = new List<TicketUi>();
+    [SerializeField]
+    TicketUi[] _ticketUis;
     [SerializeField]
     Pizza _playerPizza;
-
+    [SerializeField]
+    PlayerInput _associatedPlayer;
+    private int _playerIndex;
+    [SerializeField]
+    HealthSystem healthSystem;
+    [SerializeField]
+    AudioSource _ticketSpawned;
+    [SerializeField]
+    AudioSource _ticketFailed;
+    [SerializeField]
+    AudioSource _ticketSuccess;
     private void Start()
     {
+        _playerIndex = _associatedPlayer.playerIndex;
         GameManager.Instance.TicketSpawned += SpawnTicket;
         _playerPizza.SubmitPizza += ValidatePizza;
 
@@ -29,10 +42,13 @@ public class TicketHolderUi : MonoBehaviour
 
     private void SpawnTicket(Ticket ticket)
     {
-        TicketUi ticketUi = Instantiate(_ticketPrefab, transform);
-        ticketUi.Init(ticket);
-        ticketUi.transform.localPosition = new Vector2( _ticketUis.Count * _ticketSpace,ticketUi.transform.localPosition.y);
-        _ticketUis.Add(ticketUi);
+        TicketUi ticketUi = GetFirstReadyTicket();
+        if (ticketUi != null)
+        {
+            _ticketSpawned.Play();
+            ticketUi.Init(ticket);
+        }
+
         
     }
 
@@ -40,11 +56,16 @@ public class TicketHolderUi : MonoBehaviour
     {
         bool isValid = false;
 
-        for(int i = 0; i < _ticketUis.Count; i++)
+        for(int i = 0; i < _ticketUis.Length; i++)
         {
+            if (_ticketUis[i].GetTicket() != null)
             if (_ticketUis[i].GetTicket().ValidatePizza(Pizza))
             {
                 isValid = true;
+                    _ticketUis[i].GetTicket().FulfillTicket();
+                    GameManager.Instance.RemoveTicketFromPlayer(_playerIndex, _ticketUis[i].GetTicket());
+
+                    _ticketUis[i].FulFillTicket();
                 break;
             }
         }
@@ -52,6 +73,8 @@ public class TicketHolderUi : MonoBehaviour
         if (isValid)
         {
             Debug.Log("Valid");
+            healthSystem.TicketServed();
+            _ticketSuccess.Play();
             //yippee
         }
         else
@@ -62,4 +85,43 @@ public class TicketHolderUi : MonoBehaviour
         }
 
     }
+
+    private TicketUi GetFirstReadyTicket()
+    {
+        for(int i = 0; i < _ticketUis.Length ; i++)
+        {
+            if (_ticketUis[i].IsFulfilled())
+            {
+                return _ticketUis[i];
+            }
+        }
+        return null;
+    }
+
+    private void Update()
+    {
+        if (!GameManager.Instance.GameStarted)
+        {
+            for (int i = 0; i < _ticketUis.Length; i++)
+            {
+                if (!_ticketUis[i].IsFulfilled())
+                {
+                    _ticketUis[i].FulFillTicket();
+                }
+            }
+            return;
+        }
+        for (int i = 0; i < _ticketUis.Length; i++)
+        {
+            if (!_ticketUis[i].IsFulfilled() && _ticketUis[i].IsOutOfTime())
+            {
+                _ticketUis[i].FulFillTicket();
+                healthSystem.TicketFailed();
+                _ticketFailed.Play();
+            }
+        }
+    }
+
+    
 }
+

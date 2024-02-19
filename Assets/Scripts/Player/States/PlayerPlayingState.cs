@@ -2,6 +2,8 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerPlayingState : PlayerBaseState
 {
@@ -40,6 +42,10 @@ public class PlayerPlayingState : PlayerBaseState
     {
         switch (_currentState){
             case SlicingState.Lineup:
+                player._art.sprite = player._upSprite;
+
+                ResetLine();
+                player.transform.up = _aimPosition - (Vector2)player.transform.position;
                 // if(player.Controls.CurrentDirection != Vector2.zero)
                 if (_targetPos != _aimPosition + player.Controls.CurrentDirection * player.Radius)
                 {
@@ -62,6 +68,7 @@ public class PlayerPlayingState : PlayerBaseState
                 break;
             case SlicingState.Aim:
                 Aim(player);
+                player._art.sprite = player._downSprite;
 
                 if (!player.Controls.IsHoldingSlice && player.Controls.CurrentDirection.magnitude > 0)
                 {
@@ -70,14 +77,24 @@ public class PlayerPlayingState : PlayerBaseState
                     _currentState = SlicingState.Slice;
                     break;
                 }
+                if (!player.Controls.IsHoldingSlice)
+                {
+
+
+                    _currentState = SlicingState.Lineup;
+                    break;
+                }
 
 
                 break;
             case SlicingState.Slice:
+                player._art.sprite = player._downSprite;
 
                 if (_hasMoved == false)
                 {
+                    _player._impulse.GenerateImpulse(1);
                     _hasMoved = true;
+                    player._cutSystem.Play();
                     _player.transform.DOMove(_aimPosition, _player.FirstMoveTween.duration).SetEase(_player.FirstMoveTween.ease).onComplete += HalfWayTween;
                     _half = false;
                     _player._swipeSource.Play();
@@ -88,6 +105,9 @@ public class PlayerPlayingState : PlayerBaseState
                     player.Line.SetPosition(1, player.transform.position);
                 break;
             case SlicingState.Waiting:
+                player._art.sprite = player._upSprite;
+
+                player.transform.up = _aimPosition - (Vector2)player.transform.position;
                 player.transform.position = _aimPosition + player.Controls.CurrentDirection * player.Radius;
                 if (!_hasMoved)
                 {
@@ -101,6 +121,8 @@ public class PlayerPlayingState : PlayerBaseState
 
     private void HalfWayTween()
     {
+        _player.transform.up = _player.Line.GetPosition(2) - _player.transform.position;
+
         _half = true;
         _player.Pizza.SendMessage("MakeSlice", _directions);
         _player.transform.DOMove(_player.Line.GetPosition(2), _player.SecondMoveTween.duration).SetEase(_player.SecondMoveTween.ease).onComplete += FinishedTween;
@@ -111,12 +133,27 @@ public class PlayerPlayingState : PlayerBaseState
         _currentState = SlicingState.Lineup;
 
     }
+    private void ResetLine()
+    {
+        Vector3[] _positions = new Vector3[3];
+        _positions[0] = _player.transform.position;
+        _positions[1] = _player.transform.position;
+        _positions[2] = _player.transform.position;
+
+        _player.Line.SetPositions(_positions);
+
+    }
+
     private void Aim(PlayerManager player)
     {
         Vector3[] _positions = new Vector3[3];
         _positions[0] = player.transform.position;
         _positions[1] = _aimPosition;
-        _targetPos = (Vector2)_aimPosition + player.Controls.CurrentDirection * player.Radius;
+
+        if (Vector2.Distance((Vector2)_aimPosition + player.Controls.CurrentDirection * player.Radius, (Vector2)player.transform.position) > 0.2f)
+            _targetPos = (Vector2)_aimPosition + player.Controls.CurrentDirection * player.Radius;
+
+
         if ((Vector2)player.Line.GetPosition(2) != _targetPos && _targetPos.magnitude > 0)
         {
             _player._aimSource.Play();
