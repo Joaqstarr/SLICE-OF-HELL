@@ -34,6 +34,7 @@ public class HealthSystem : MonoBehaviour
     public void TicketServed()
     {
         _health += _heal;
+        _health = Mathf.Min( _health, _maxHealth );
         UpdateBar();
     }
 
@@ -49,7 +50,7 @@ public class HealthSystem : MonoBehaviour
     {
         if (_health <= 0)
         {
-            GameManager.Instance.EndGame(_associatedPlayer.playerIndex);
+            GameManager.Instance.EndGame(_associatedPlayer.playerIndex + 1);
         }
     }
     private void UpdateBar()

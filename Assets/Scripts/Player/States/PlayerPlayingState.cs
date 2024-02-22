@@ -73,6 +73,12 @@ public class PlayerPlayingState : PlayerBaseState
                 if (!player.Controls.IsHoldingSlice && player.Controls.CurrentDirection.magnitude > 0)
                 {
                     _directions[1] = player.Controls.CurrentDirection;
+                    if (_directions[0] == _directions[1])
+                    {
+                        _directions[1].x *= -1;
+                        _directions[1].y *= -1;
+
+                    }
                     _hasMoved = false;
                     _currentState = SlicingState.Slice;
                     break;
@@ -152,7 +158,8 @@ public class PlayerPlayingState : PlayerBaseState
 
         if (Vector2.Distance((Vector2)_aimPosition + player.Controls.CurrentDirection * player.Radius, (Vector2)player.transform.position) > 0.2f)
             _targetPos = (Vector2)_aimPosition + player.Controls.CurrentDirection * player.Radius;
-
+        else
+            _targetPos = (Vector2)_aimPosition + player.Controls.CurrentDirection * -player.Radius;
 
         if ((Vector2)player.Line.GetPosition(2) != _targetPos && _targetPos.magnitude > 0)
         {

@@ -9,14 +9,14 @@ public class TicketHolderUi : MonoBehaviour
 
     [SerializeField]
     TicketUi _ticketPrefab;
-    [SerializeField]
-    float _ticketSpace = 2f;
+
     [SerializeField]
     TicketUi[] _ticketUis;
     [SerializeField]
     Pizza _playerPizza;
     [SerializeField]
     PlayerInput _associatedPlayer;
+    [SerializeField]
     private int _playerIndex;
     [SerializeField]
     HealthSystem healthSystem;
@@ -28,7 +28,7 @@ public class TicketHolderUi : MonoBehaviour
     AudioSource _ticketSuccess;
     private void Start()
     {
-        _playerIndex = _associatedPlayer.playerIndex;
+        //_playerIndex = _associatedPlayer.playerIndex;
         GameManager.Instance.TicketSpawned += SpawnTicket;
         _playerPizza.SubmitPizza += ValidatePizza;
 

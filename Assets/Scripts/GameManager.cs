@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     PlayerManager[] _players;
     [SerializeField] Pizza[] pizzas;
+    public UnityEvent OnEndGame;
     // Start is called before the first frame update
     void Awake()
     {
@@ -75,10 +76,11 @@ public class GameManager : MonoBehaviour
             bool bothReadied = true;
             for (int i = 0; i < _tickets.Length; i++)
             {
+                Debug.Log(i + ", " + _tickets[i].Count + ", " + _readySpawned);
+
                 if (_tickets[i].Count != 0)
                 {
                     _readySpawned = true;
-                    Debug.Log(i + ", " + _tickets[i].Count);
                     bothReadied = false;
                 }
             }
@@ -136,7 +138,7 @@ public class GameManager : MonoBehaviour
         _readyUp = true;
 
         GameStarted = true;
-
+        _speedTransition = 0;
         _readySpawned = false;
         _camera.DOMoveY(0, _camTween.duration).SetEase(_camTween.ease).onComplete += ()=> {
 
@@ -218,11 +220,17 @@ public class GameManager : MonoBehaviour
 
     public void RemoveTicketFromPlayer(int playerIndex, Ticket ticket)
     {
-        _tickets[playerIndex].Remove(ticket);
+        Debug.Log(playerIndex + "(index)");
+        if(_tickets.Length > playerIndex)
+        {
+            _tickets[playerIndex].Remove(ticket);
+            Debug.Log("ticket removed");
+        }
     }
 
     public void EndGame(int playerIndex)
     {
+        OnEndGame.Invoke();
         Debug.Log("Player " + playerIndex + " wins.");
         _players[0].SwitchState(_players[0]._playerTitleState);
         _players[1].SwitchState(_players[1]._playerTitleState);
